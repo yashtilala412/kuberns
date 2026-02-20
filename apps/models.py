@@ -29,9 +29,14 @@ class EnvVariable(models.Model):
     value = models.CharField(max_length=255)
 
 class Instance(models.Model):
-    environment = models.OneToOneField(Environment, on_delete=models.CASCADE)
-    instance_id = models.CharField(max_length=100, blank=True, null=True) # AWS Instance ID
+    environment = models.OneToOneField(Environment, on_delete=models.CASCADE, related_name='instance')
+    instance_id = models.CharField(max_length=100, blank=True, null=True)
     public_ip = models.GenericIPAddressField(blank=True, null=True)
-    status = models.CharField(max_length=50, default='Pending') # Pending, Running, Terminated
-    cpu = models.CharField(max_length=50)
-    ram = models.CharField(max_length=50)
+    status = models.CharField(max_length=50, default='Pending')
+    cpu = models.CharField(max_length=50, blank=True, null=True)
+    ram = models.CharField(max_length=50, blank=True, null=True)
+
+class DeploymentLog(models.Model):
+    instance = models.ForeignKey(Instance, related_name='logs', on_delete=models.CASCADE)
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
