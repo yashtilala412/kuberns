@@ -1,6 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import threading
+from django.db import transaction
 from .models import Environment, Instance
 from .provisioner import provision_ec2
 
