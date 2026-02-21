@@ -18,6 +18,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.status),
+    path('admin/', admin.site.urls),
     path('api/', include('apps.urls')), # This prefixes all your app URLs with 'api/'
 ]
