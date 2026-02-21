@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+body {
+  background-color: #0B0C10;
+  color-scheme: dark;
+}
+
+/* Custom Scrollbar for that pro look */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0B0C10;
+}
+::-webkit-scrollbar-thumb {
+  background: #1A1B23;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2D2E37;
+}
