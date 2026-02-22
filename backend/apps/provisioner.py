@@ -6,6 +6,14 @@ def provision_ec2(instance_obj, aws_access_key, aws_secret_key):
     """
     Logic to talk to AWS and start a server.
     """
+    if not aws_access_key or aws_access_key == "YOUR_ACCESS_KEY":
+        DeploymentLog.objects.create(instance=instance_obj, message="[MOCK MODE] Validating credentials...")
+        time.sleep(1) # Simulate network delay
+        DeploymentLog.objects.create(instance=instance_obj, message="[MOCK MODE] AWS Instance i-mock12345 created successfully.")
+        instance_obj.instance_id = "i-mock12345"
+        instance_obj.status = "Deploying"
+        instance_obj.save()
+        return
     # --- ADD THIS MAPPING HERE ---
     REGION_MAP = {
         'United States - Michigan': 'us-east-2',
