@@ -12,7 +12,46 @@ export default function App() {
     port: '8080',
     variables: [{ key: 'API_URL', value: 'https://api.example.com' }]
   });
+const handleSubmit = async () => {
+  // Format data for Django
+  const payload = {
+    name: formData.name || "Untitled App",
+    repo_url: "https://github.com/user/repo", // Mock repo
+    owner: "Adith Narein T",
+    environments: [
+      {
+        branch: "main",
+        region: formData.region,
+        framework: formData.framework,
+        plan_type: formData.plan,
+        port: parseInt(formData.port),
+        variables: formData.variables.filter(v => v.key && v.value) // Remove empty rows
+      }
+    ]
+  };
 
+  try {
+    const response = await fetch('http://127.0.0.1:8000/api/webapps/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (response.ok) {
+      alert("🚀 Deployment Started! Check Django Admin for logs.");
+      setStep(1); // Reset to beginning
+    } else {
+      const errorData = await response.json();
+      console.error("Backend Error:", errorData);
+      alert("Submission failed. Check console for details.");
+    }
+  } catch (error) {
+    console.error("Network Error:", error);
+    alert("Could not connect to the Backend. Is your Django server running?");
+  }
+};
   return (
     <div className="min-h-screen bg-[#0B0C10] text-gray-300 font-sans">
       {/* Navbar */}
@@ -57,7 +96,12 @@ export default function App() {
         {step === 1 ? (
           <PageOne setStep={setStep} formData={formData} setFormData={setFormData} />
         ) : (
-          <PageTwo setStep={setStep} formData={formData} setFormData={setFormData} />
+          <PageTwo 
+             setStep={setStep} 
+             formData={formData} 
+             setFormData={setFormData} 
+             handleSubmit={handleSubmit} // <--- Add this!
+          />
         )}
       </main>
     </div>
@@ -167,7 +211,7 @@ const PageOne = ({ setStep, formData, setFormData }) => {
 };
 
 // --- PAGE 2: PORT & ENV VARIABLES ---
-const PageTwo = ({ setStep, formData, setFormData }) => {
+const PageTwo = ({ setStep, formData, setFormData ,handleSubmit}) => {
   const addVariable = () => {
     setFormData({
       ...formData,
@@ -254,6 +298,7 @@ const PageTwo = ({ setStep, formData, setFormData }) => {
             Back
         </button>
         <button 
+            onClick={handleSubmit}
             className="flex-[2] py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-900/20"
         >
             Finish my Setup 🚀
