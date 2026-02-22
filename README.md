@@ -31,3 +31,14 @@ A full-stack cloud provisioning dashboard built for the technical assessment. Th
 - `/backend/apps`: Core logic, models for WebApps, Environments, and Logs.
 - `/backend/provisioner.py`: The AWS Boto3 logic and region mapping.
 - `/frontend/src/App.jsx`: The React dashboard and API integration logic.
+## 🚀 Setup Instructions
+
+### 1. Backend (Django)
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install django djangorestframework django-cors-headers boto3
+python manage.py migrate
+python manage.py createsuperuser # To check logs in Admin
+python manage.py runserver
