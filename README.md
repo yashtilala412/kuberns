@@ -42,3 +42,11 @@ pip install django djangorestframework django-cors-headers boto3
 python manage.py migrate
 python manage.py createsuperuser # To check logs in Admin
 python manage.py runserver
+```
+### 2.Frontend (react)
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
