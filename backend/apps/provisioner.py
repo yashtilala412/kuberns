@@ -6,6 +6,7 @@ def provision_ec2(instance_obj, aws_access_key, aws_secret_key):
     """
     Logic to talk to AWS and start a server.
     """
+    USE_MOCK = True
     if not aws_access_key or aws_access_key == "YOUR_ACCESS_KEY":
         DeploymentLog.objects.create(instance=instance_obj, message="[MOCK MODE] Validating credentials...")
         time.sleep(1) # Simulate network delay
