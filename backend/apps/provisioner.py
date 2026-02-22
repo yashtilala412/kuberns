@@ -6,25 +6,35 @@ def provision_ec2(instance_obj, aws_access_key, aws_secret_key):
     """
     Logic to talk to AWS and start a server.
     """
+    # --- ADD THIS MAPPING HERE ---
+    REGION_MAP = {
+        'United States - Michigan': 'us-east-2',
+        'Asia Pacific - Mumbai': 'ap-south-1',
+    }
+    
+    # Translate the UI name to a technical AWS region code
+    # If the name isn't in the map, it defaults to us-east-1
+    aws_region_code = REGION_MAP.get(instance_obj.environment.region, 'us-east-1')
+
     try:
-        # 1. Initialize the AWS Client
+        # 1. Initialize the AWS Client using the NEW aws_region_code
         ec2 = boto3.client(
             'ec2',
-            region_name=instance_obj.environment.region,
+            region_name=aws_region_code, # Use the translated code here
             aws_access_key_id=aws_access_key,
             aws_secret_access_key=aws_secret_key
         )
 
         # 2. Log the start
-        DeploymentLog.objects.create(instance=instance_obj, message="Starting AWS Provisioning...")
+        DeploymentLog.objects.create(instance=instance_obj, message=f"Starting AWS Provisioning in {aws_region_code}...")
 
-        # 3. Create the instance (This is the core requirement)
-        # Mapping our 'Starter'/'Pro' to real AWS types
+        # 3. Create the instance
         instance_type = 't2.micro' if instance_obj.environment.plan_type == 'Starter' else 't3.medium'
         
-        # This is where the magic happens
+        # Note: ImageId 'ami-0c55b159cbfafe1f0' is specific to us-east-2. 
+        # For a production app, you'd map AMIs to regions too!
         response = ec2.run_instances(
-            ImageId='ami-0c55b159cbfafe1f0', # Standard Ubuntu AMI (varies by region)
+            ImageId='ami-0c55b159cbfafe1f0', 
             InstanceType=instance_type,
             MinCount=1,
             MaxCount=1,
