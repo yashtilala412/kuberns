@@ -49,4 +49,11 @@ cd frontend
 npm install
 npm run dev
 ```
+### ER Diagram (Simple)
+WebApp: (id, name, repo_url, owner)
 
+1:N -> AppEnvironment: (id, branch, region, plan_type, port)
+
+1:1 -> Instance: (id, instance_id, status, public_ip)
+
+1:N -> DeploymentLog: (id, message, timestamp)
