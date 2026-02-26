@@ -32,3 +32,4 @@ class WebAppSerializer(serializers.ModelSerializer):
             for var in vars_data:
                 EnvVariable.objects.create(environment=environment, **var)
         return webapp
+        #modular clean structure
