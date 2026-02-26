@@ -57,3 +57,13 @@ WebApp: (id, name, repo_url, owner)
 1:1 -> Instance: (id, instance_id, status, public_ip)
 
 1:N -> DeploymentLog: (id, message, timestamp)
+
+### Docker Setup
+```bash
+# From the root directory
+docker-compose up --build
+```
+### 🚀 Project URLs
+* **Frontend UI:** [http://localhost:5173](http://localhost:5173)
+* **API Root:** [http://localhost:8000/api/webapps/](http://localhost:8000/api/webapps/)
+* **Django Admin:** [http://localhost:8000/admin/](http://localhost:8000/admin/)
